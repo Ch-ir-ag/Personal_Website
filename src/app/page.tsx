@@ -244,7 +244,3 @@ const projects = [
     description: "An intelligent chatbot interface powered by machine learning.",
   },
 ]
-
-// Replace the placeholder icon components at the bottom with these:
-const LinkedInIcon = FiLinkedin
-const MailIcon = FiMail
