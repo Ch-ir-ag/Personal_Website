@@ -193,10 +193,10 @@ export default function Home() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.4 }}
         >
-          <Link href="https://linkedin.com/in/yourusername" className="hover:text-gray-300">
+          <Link href="https://www.linkedin.com/in/chiragJ2" className="hover:text-gray-300">
             <FiLinkedin className="w-6 h-6" />
           </Link>
-          <Link href="mailto:your@email.com" className="hover:text-gray-300">
+          <Link href="mailto:csjoshi2003@gmail.com" className="hover:text-gray-300">
             <FiMail className="w-6 h-6" />
           </Link>
         </motion.div>
