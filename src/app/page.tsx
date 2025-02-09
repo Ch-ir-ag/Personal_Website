@@ -149,32 +149,39 @@ export default function Home() {
 
   const highlights = [
     {
-      title: "Ranked Top 1% of Talent in Ireland by DogPatch Labs",
-      description: "Ireland's most competitive startup accelerator"
+      title: "Top 1% of talent  Ireland 2025",
+      emoji: "🏆",
+      description: "Ranked Top 1% of Talent in Ireland by DogPatch Labs - Ireland's most competitive startup accelerator"
     },
     {
-      title: "Graduated rank #2 in Mechatronics Engineering",
-      description: "From Dublin City University"
+      title: "Rank #2 Graduate",
+      emoji: "🎓",
+      description: "Graduated rank #2 in Mechatronics Engineering from Dublin City University"
     },
     {
-      title: "Won 3rd place in BT Young Scientist (Physics, Chemistry, and Maths)",
-      description: "By disproving a half-a-century old math lemma"
+      title: "3rd Place BT Young Scientist",
+      emoji: "👨🏻‍🔬",
+      description: "Won 3rd place in BT Young Scientist (Physics, Chemistry, and Maths) by disproving a half-a-century old math lemma"
     },
     {
-      title: "Saved a projected €26 million annually during my internship",
-      description: "Developed a Real Time Asset Location Tracking System for AbbVie"
+      title: "€26M Impact",
+      emoji: "💸",
+      description: "Saved a projected €26 million annually at AbbVie by developing a Real Time Asset Location Tracking System"
     },
     {
-      title: "Ranked top 10 STEM Students in Ireland by Huawei",
+      title: "Top 10 STEM students 2024",
+      emoji: "🍀",
       description: "Selection for the Irish team for Huawei's International Startup Competition - Seeds for the Future"
     },
     {
-      title: "Ranked top 5 in Huawei's International Startup Competition",
-      description: "Developed an AI-driven prototype for solving Ireland's water sanitation problem"
+      title: "Global Top 5",
+      emoji: "🌍",
+      description: "Ranked top 5 in Huawei's International Startup Competition with an AI-driven water sanitation solution"
     },
     {
-      title: "Developed an AI-driven ML model for energy prediction for my thesis",
-      description: "To be showcased globally in 2025"
+      title: "AI Research",
+      emoji: "🤖",
+      description: "Developed an AI-driven ML model for energy prediction for my thesis, to be showcased globally in 2025"
     }
   ]
 
@@ -230,7 +237,11 @@ export default function Home() {
         {/* Title Section */}
         <div className="text-center mb-20 w-full max-w-4xl mx-auto">
           <motion.h1
-            className="text-4xl sm:text-5xl md:text-7xl font-bold mb-6 min-h-[1.2em] whitespace-normal px-4"
+            className="text-4xl sm:text-5xl md:text-7xl font-bold mb-6 min-h-[1.2em] whitespace-normal px-4 leading-tight"
+            style={{ 
+              fontSize: 'clamp(2rem, 8vw, 5rem)',
+              lineHeight: '1.1'
+            }}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.8 }}
@@ -272,31 +283,67 @@ export default function Home() {
             {highlights.slice(0, 4).map((highlight, index) => (
               <motion.div
                 key={index}
-                className="bg-white/5 backdrop-blur-sm rounded-lg p-4 md:p-6 hover:bg-white/10 transition-colors flex flex-col items-center text-center h-full"
+                className="bg-white/5 backdrop-blur-sm rounded-lg p-4 md:p-6 hover:bg-white/10 transition-all duration-300 
+                           flex flex-col items-center text-center h-full group relative overflow-hidden cursor-none"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: index * 0.1 }}
               >
-                <h3 className="text-lg md:text-xl font-semibold mb-3">{highlight.title}</h3>
-                <p className="text-gray-400 text-sm md:text-base">{highlight.description}</p>
+                <div className="transform group-hover:opacity-0 transition-all duration-300 ease-in-out">
+                  <div className="text-3xl mb-2">{highlight.emoji}</div>
+                  <h3 className="text-lg md:text-xl font-semibold">{highlight.title}</h3>
+                </div>
+                <div className="absolute inset-0 p-4 bg-white/5 backdrop-blur-sm opacity-0 group-hover:opacity-100 
+                              flex items-center justify-center transition-all duration-300 ease-in-out">
+                  <p className="text-gray-300 text-sm md:text-base">{highlight.description}</p>
+                </div>
               </motion.div>
             ))}
           </div>
 
           {/* Bottom row - 3 boxes */}
-          <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 lg:px-[12.5%]">
-            {highlights.slice(4).map((highlight, index) => (
+          <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+            {highlights.slice(4, 6).map((highlight, index) => (
               <motion.div
                 key={index + 4}
-                className="bg-white/5 backdrop-blur-sm rounded-lg p-4 md:p-6 hover:bg-white/10 transition-colors flex flex-col items-center text-center h-full"
+                className="bg-white/5 backdrop-blur-sm rounded-lg p-4 md:p-6 hover:bg-white/10 transition-all duration-300 
+                           flex flex-col items-center text-center h-full group relative overflow-hidden cursor-none"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: (index + 4) * 0.1 }}
               >
-                <h3 className="text-lg md:text-xl font-semibold mb-3">{highlight.title}</h3>
-                <p className="text-gray-400 text-sm md:text-base">{highlight.description}</p>
+                <div className="transform group-hover:opacity-0 transition-all duration-300 ease-in-out">
+                  <div className="text-3xl mb-2">{highlight.emoji}</div>
+                  <h3 className="text-lg md:text-xl font-semibold">{highlight.title}</h3>
+                </div>
+                <div className="absolute inset-0 p-4 bg-white/5 backdrop-blur-sm opacity-0 group-hover:opacity-100 
+                              flex items-center justify-center transition-all duration-300 ease-in-out">
+                  <p className="text-gray-300 text-sm md:text-base">{highlight.description}</p>
+                </div>
               </motion.div>
             ))}
+
+            {/* Last box - centered on mobile, aligned on desktop */}
+            {highlights.length > 6 && (
+              <motion.div
+                key="last-box"
+                className="col-span-2 lg:col-span-1 bg-white/5 backdrop-blur-sm rounded-lg p-4 md:p-6 
+                           hover:bg-white/10 transition-all duration-300 flex flex-col items-center text-center 
+                           h-full group relative overflow-hidden cursor-none max-w-sm mx-auto lg:max-w-none lg:mx-0"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.7 }}
+              >
+                <div className="transform group-hover:opacity-0 transition-all duration-300 ease-in-out">
+                  <div className="text-3xl mb-2">{highlights[6].emoji}</div>
+                  <h3 className="text-lg md:text-xl font-semibold">{highlights[6].title}</h3>
+                </div>
+                <div className="absolute inset-0 p-4 bg-white/5 backdrop-blur-sm opacity-0 group-hover:opacity-100 
+                              flex items-center justify-center transition-all duration-300 ease-in-out">
+                  <p className="text-gray-300 text-sm md:text-base">{highlights[6].description}</p>
+                </div>
+              </motion.div>
+            )}
           </div>
         </div>
 
