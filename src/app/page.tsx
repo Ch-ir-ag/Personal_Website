@@ -221,7 +221,6 @@ export default function Home() {
         </Link>
         <div className="flex gap-3 md:gap-6 text-sm md:text-base">
           <Link href="/news" className="hover:text-gray-300 transition-colors">News</Link>
-          <Link href="/contact" className="hover:text-gray-300 transition-colors">Contact</Link>
           <Link href="/resume" className="bg-white text-black px-3 py-1 rounded hover:bg-gray-200 transition-colors">
             Resume
           </Link>
@@ -269,7 +268,7 @@ export default function Home() {
         </div>
 
         {/* Highlights Grid */}
-        <div className="flex flex-col gap-4 md:gap-6 max-w-7xl mx-auto w-full px-4">
+        <div className="flex flex-col gap-4 md:gap-6 max-w-7xl mx-auto w-full px-4 -mt-8">
           {/* Top row - 4 boxes */}
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
             {highlights.slice(0, 4).map((highlight, index) => (
