@@ -248,7 +248,7 @@ export default function Home() {
             transition={{ duration: 0.8, delay: 0.2 }}
             key="description"
           >
-            Hey, I'm Chirag Joshi.
+            {"Hey, I'm Chirag Joshi."}
           </motion.p>
 
           {/* Social Links */}
