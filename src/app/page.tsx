@@ -167,11 +167,11 @@ export default function Home() {
     // Adding 3 more boxes for the bottom row
     {
       title: "Ranked top 10 STEM Students in Ireland by Huawei",
-      description: "Selection for the Irish team for Huawei&apos;s International Startup Competition  - Seeds for the Future"
+      description: "Selection for the Irish team for Huawei's International Startup Competition  - Seeds for the Future"
     },
     {
       title: "Ranked top 5 in Huawei's Internation Startup Competition",
-      description: "Developed an AI-driven prototype for solving Ireland&apos;s water sanitation problem"
+      description: "Developed an AI-driven prototype for solving Ireland's water sanitation problem"
     },
     {
       title: "Developed an AI-driven ML model for energy prediction for my thesis",
