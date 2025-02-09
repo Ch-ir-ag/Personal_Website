@@ -161,16 +161,15 @@ export default function Home() {
       description: "By disproving a half-a-century old math lemma"
     },
     {
-      title: "Saved a projected €26 million annually during my internship ",
+      title: "Saved a projected €26 million annually during my internship",
       description: "Developed a Real Time Asset Location Tracking System for AbbVie"
     },
-    // Adding 3 more boxes for the bottom row
     {
       title: "Ranked top 10 STEM Students in Ireland by Huawei",
-      description: "Selection for the Irish team for Huawei's International Startup Competition  - Seeds for the Future"
+      description: "Selection for the Irish team for Huawei's International Startup Competition - Seeds for the Future"
     },
     {
-      title: "Ranked top 5 in Huawei's Internation Startup Competition",
+      title: "Ranked top 5 in Huawei's International Startup Competition",
       description: "Developed an AI-driven prototype for solving Ireland's water sanitation problem"
     },
     {
