@@ -69,11 +69,19 @@ export default function Home() {
     const ctx = canvas.getContext("2d")
     if (!ctx) return
 
-    canvas.width = window.innerWidth
-    canvas.height = window.innerHeight
+    const setCanvasSize = () => {
+      // Get the actual display size of the canvas
+      const displayWidth = canvas.clientWidth
+      const displayHeight = canvas.clientHeight
 
-    const particles: Particle[] = []
-    const particleCount = 100
+      // Check if the canvas size needs to be updated
+      if (canvas.width !== displayWidth || canvas.height !== displayHeight) {
+        canvas.width = displayWidth
+        canvas.height = displayHeight
+      }
+    }
+
+    setCanvasSize()
 
     class Particle {
       x: number
@@ -83,21 +91,26 @@ export default function Home() {
       speedY: number
 
       constructor() {
+        this.reset()
+      }
+
+      reset() {
         this.x = Math.random() * canvas.width
         this.y = Math.random() * canvas.height
-        this.size = Math.random() * 2 + 0.1
-        this.speedX = Math.random() * 2 - 1
-        this.speedY = Math.random() * 2 - 1
+        this.size = Math.random() * 1.5 + 0.5  // Slightly larger particles
+        this.speedX = (Math.random() - 0.5) * 0.5  // Slower speed
+        this.speedY = (Math.random() - 0.5) * 0.5
       }
 
       update() {
         this.x += this.speedX
         this.y += this.speedY
 
-        if (this.x > canvas.width) this.x = 0
-        if (this.x < 0) this.x = canvas.width
-        if (this.y > canvas.height) this.y = 0
-        if (this.y < 0) this.y = canvas.height
+        // Reset particle if it goes off screen
+        if (this.x < 0 || this.x > canvas.width || 
+            this.y < 0 || this.y > canvas.height) {
+          this.reset()
+        }
       }
 
       draw() {
@@ -109,9 +122,20 @@ export default function Home() {
       }
     }
 
-    for (let i = 0; i < particleCount; i++) {
-      particles.push(new Particle())
+    // Calculate particle count based on screen area
+    const baseParticleCount = 50
+    const particles: Particle[] = []
+    
+    const createParticles = () => {
+      const area = canvas.width * canvas.height
+      const particleCount = Math.floor(baseParticleCount * (area / (1920 * 1080)))
+      particles.length = 0
+      for (let i = 0; i < particleCount; i++) {
+        particles.push(new Particle())
+      }
     }
+
+    createParticles()
 
     function animate() {
       if (!ctx) return
@@ -128,9 +152,8 @@ export default function Home() {
     animate()
 
     const handleResize = () => {
-      if (!canvasRef.current) return
-      canvasRef.current.width = window.innerWidth
-      canvasRef.current.height = window.innerHeight
+      setCanvasSize()
+      createParticles()
     }
 
     window.addEventListener("resize", handleResize)
@@ -182,7 +205,7 @@ export default function Home() {
     {
       title: "AI Research",
       emoji: "🤖",
-      description: "Developed an AI-driven ML model for energy prediction for my thesis, to be showcased globally in 2025"
+      description: "Made an AI-ML model for energy prediction, to be showcased globally in 2025"
     }
   ]
 
@@ -238,10 +261,11 @@ export default function Home() {
         {/* Title Section */}
         <div className="text-center mb-20 w-full max-w-4xl mx-auto">
           <motion.h1
-            className="text-4xl sm:text-5xl md:text-7xl font-bold mb-6 min-h-[1.2em] whitespace-normal px-4 leading-tight"
-            style={{ 
-              fontSize: 'clamp(2rem, 8vw, 5rem)',
-              lineHeight: '1.1'
+            className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold mb-6 min-h-[1.2em] px-4"
+            style={{
+              fontSize: 'clamp(1.5rem, 5vw, 4.5rem)',
+              lineHeight: 1.2,
+              whiteSpace: 'nowrap'  // Prevent text wrapping
             }}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -334,7 +358,7 @@ export default function Home() {
             {highlights.length > 6 && (
               <motion.div
                 key="last-box"
-                className="col-span-2 lg:col-span-1 bg-white/5 backdrop-blur-sm rounded-lg p-4 md:p-6 
+                className="col-span-2 lg:col-span-1 bg-white/5 backdrop-blur-sm rounded-lg p-6 md:p-6 
                            hover:bg-white/10 transition-all duration-300 flex flex-col items-center text-center 
                            h-full group relative overflow-hidden cursor-none md:cursor-none max-w-sm mx-auto lg:max-w-none lg:mx-0"
                 initial={{ opacity: 0, y: 20 }}
