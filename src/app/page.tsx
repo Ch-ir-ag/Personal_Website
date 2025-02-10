@@ -84,11 +84,11 @@ export default function Home() {
     setCanvasSize()
 
     class Particle {
-      x: number
-      y: number
-      size: number
-      speedX: number
-      speedY: number
+      x: number = 0
+      y: number = 0
+      size: number = 0
+      speedX: number = 0
+      speedY: number = 0
 
       constructor() {
         this.reset()
