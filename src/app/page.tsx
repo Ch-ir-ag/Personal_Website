@@ -60,6 +60,7 @@ const useTypingEffect = (words: string[]) => {
 
 export default function Home() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
+  const [activeBox, setActiveBox] = useState<number | null>(null)
 
   useEffect(() => {
     if (!canvasRef.current) return
@@ -284,17 +285,20 @@ export default function Home() {
               <motion.div
                 key={index}
                 className="bg-white/5 backdrop-blur-sm rounded-lg p-4 md:p-6 hover:bg-white/10 transition-all duration-300 
-                           flex flex-col items-center text-center h-full group relative overflow-hidden cursor-none"
+                           flex flex-col items-center text-center h-full group relative overflow-hidden cursor-none md:cursor-none"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: index * 0.1 }}
+                onClick={() => setActiveBox(activeBox === index ? null : index)}
               >
-                <div className="transform group-hover:opacity-0 transition-all duration-300 ease-in-out">
+                <div className={`transform transition-all duration-300 ease-in-out
+                  ${activeBox === index ? 'opacity-0' : 'group-hover:opacity-0 opacity-100'}`}>
                   <div className="text-3xl mb-2">{highlight.emoji}</div>
                   <h3 className="text-lg md:text-xl font-semibold">{highlight.title}</h3>
                 </div>
-                <div className="absolute inset-0 p-4 bg-white/5 backdrop-blur-sm opacity-0 group-hover:opacity-100 
-                              flex items-center justify-center transition-all duration-300 ease-in-out">
+                <div className={`absolute inset-0 p-4 bg-white/5 backdrop-blur-sm 
+                  transition-all duration-300 ease-in-out flex items-center justify-center
+                  ${activeBox === index ? 'opacity-100' : 'group-hover:opacity-100 opacity-0'}`}>
                   <p className="text-gray-300 text-sm md:text-base">{highlight.description}</p>
                 </div>
               </motion.div>
@@ -307,17 +311,20 @@ export default function Home() {
               <motion.div
                 key={index + 4}
                 className="bg-white/5 backdrop-blur-sm rounded-lg p-4 md:p-6 hover:bg-white/10 transition-all duration-300 
-                           flex flex-col items-center text-center h-full group relative overflow-hidden cursor-none"
+                           flex flex-col items-center text-center h-full group relative overflow-hidden cursor-none md:cursor-none"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: (index + 4) * 0.1 }}
+                onClick={() => setActiveBox(activeBox === (index + 4) ? null : (index + 4))}
               >
-                <div className="transform group-hover:opacity-0 transition-all duration-300 ease-in-out">
+                <div className={`transform transition-all duration-300 ease-in-out
+                  ${activeBox === (index + 4) ? 'opacity-0' : 'group-hover:opacity-0 opacity-100'}`}>
                   <div className="text-3xl mb-2">{highlight.emoji}</div>
                   <h3 className="text-lg md:text-xl font-semibold">{highlight.title}</h3>
                 </div>
-                <div className="absolute inset-0 p-4 bg-white/5 backdrop-blur-sm opacity-0 group-hover:opacity-100 
-                              flex items-center justify-center transition-all duration-300 ease-in-out">
+                <div className={`absolute inset-0 p-4 bg-white/5 backdrop-blur-sm 
+                  transition-all duration-300 ease-in-out flex items-center justify-center
+                  ${activeBox === (index + 4) ? 'opacity-100' : 'group-hover:opacity-100 opacity-0'}`}>
                   <p className="text-gray-300 text-sm md:text-base">{highlight.description}</p>
                 </div>
               </motion.div>
@@ -329,17 +336,20 @@ export default function Home() {
                 key="last-box"
                 className="col-span-2 lg:col-span-1 bg-white/5 backdrop-blur-sm rounded-lg p-4 md:p-6 
                            hover:bg-white/10 transition-all duration-300 flex flex-col items-center text-center 
-                           h-full group relative overflow-hidden cursor-none max-w-sm mx-auto lg:max-w-none lg:mx-0"
+                           h-full group relative overflow-hidden cursor-none md:cursor-none max-w-sm mx-auto lg:max-w-none lg:mx-0"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.7 }}
+                onClick={() => setActiveBox(activeBox === 6 ? null : 6)}
               >
-                <div className="transform group-hover:opacity-0 transition-all duration-300 ease-in-out">
+                <div className={`transform transition-all duration-300 ease-in-out
+                  ${activeBox === 6 ? 'opacity-0' : 'group-hover:opacity-0 opacity-100'}`}>
                   <div className="text-3xl mb-2">{highlights[6].emoji}</div>
                   <h3 className="text-lg md:text-xl font-semibold">{highlights[6].title}</h3>
                 </div>
-                <div className="absolute inset-0 p-4 bg-white/5 backdrop-blur-sm opacity-0 group-hover:opacity-100 
-                              flex items-center justify-center transition-all duration-300 ease-in-out">
+                <div className={`absolute inset-0 p-4 bg-white/5 backdrop-blur-sm 
+                  transition-all duration-300 ease-in-out flex items-center justify-center
+                  ${activeBox === 6 ? 'opacity-100' : 'group-hover:opacity-100 opacity-0'}`}>
                   <p className="text-gray-300 text-sm md:text-base">{highlights[6].description}</p>
                 </div>
               </motion.div>

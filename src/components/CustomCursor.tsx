@@ -6,19 +6,31 @@ import { motion } from 'framer-motion'
 export default function CustomCursor() {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
   const [isPointer, setIsPointer] = useState(false)
+  const [isMobile, setIsMobile] = useState(true) // Start with true to prevent flicker
 
   useEffect(() => {
+    // Check if we're on mobile
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768)
+    }
+    
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+
     const updateMousePosition = (e: MouseEvent) => {
       setMousePosition({ x: e.clientX, y: e.clientY })
-      
-      // Check if the cursor is over a clickable element
       const target = e.target as HTMLElement
       setIsPointer(window.getComputedStyle(target).cursor === 'pointer')
     }
 
     window.addEventListener('mousemove', updateMousePosition)
-    return () => window.removeEventListener('mousemove', updateMousePosition)
+    return () => {
+      window.removeEventListener('mousemove', updateMousePosition)
+      window.removeEventListener('resize', checkMobile)
+    }
   }, [])
+
+  if (isMobile) return null
 
   return (
     <>

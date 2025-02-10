@@ -30,9 +30,9 @@ body {
   cursor: none !important;
 }
 
-@media (max-width: 768px) {
+@media (min-width: 769px) {
   * {
-    cursor: auto !important;
+    cursor: none !important;
   }
 }
 
