@@ -383,7 +383,7 @@ export default function Home() {
 
         {/* Work Experience Section */}
         <section className="relative z-10 py-20 px-4">
-          <h2 className="text-3xl font-bold text-center mb-16">Where I've been</h2>
+          <h2 className="text-3xl font-bold text-center mb-16">Where I have been</h2>
           <div className="max-w-4xl mx-auto">
             {workExperience.map((work, index) => (
               <motion.div
