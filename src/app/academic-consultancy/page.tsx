@@ -3,39 +3,137 @@
 import { motion } from "framer-motion"
 import Link from "next/link"
 import { FiArrowLeft } from 'react-icons/fi'
+import { useEffect, useRef } from "react"
 
 const services = [
   {
-    title: "Project Consultation",
-    price: "€60/hour",
-    description: "One-on-one consultation for engineering and computer science projects. Get expert guidance on:",
+    title: "Academic Consultation",
+    price: "€45/hour",
+    description: "One-on-one consultation for academics.",
     features: [
-      "Algorithm optimization",
-      "System architecture design",
-      "Technical implementation",
-      "Problem-solving strategies",
-      "Code review and best practices"
+      "STEM student guidance (Mechatronics, AI, Software Engineering)",
+      "Machine Learning & AI tutoring",
+      "University applications & research mentoring",
+      "Mathematics & algorithmic problem-solving",
+      "Technical writing & research paper assistance" 
     ]
   },
   {
-    title: "Research & Thesis Support",
+    title: "Professional Consultation",
     price: "€75/hour",
-    description: "Comprehensive support for academic research and thesis development:",
+    description: "One-on-one consultation for early & mid stage careers.",
     features: [
-      "Research methodology guidance",
-      "Data analysis assistance",
-      "Technical writing review",
-      "Literature review strategy",
-      "Presentation preparation"
+      "Resume & cover letter optimization (STEM careers)",
+      "Interview prep (technical & behavioral)",
+      "Startup & accelerator coaching (pitching, ideation)",
+      "Tech industry career guidance",
+      "Internship & graduate program application support"
     ]
   }
 ]
 
 export default function AcademicConsultancy() {
+  const canvasRef = useRef<HTMLCanvasElement>(null)
+
+  useEffect(() => {
+    if (!canvasRef.current) return
+
+    const canvas = canvasRef.current
+    const ctx = canvas.getContext("2d")
+    if (!ctx) return
+
+    const setCanvasSize = () => {
+      const displayWidth = canvas.clientWidth
+      const displayHeight = canvas.clientHeight
+      if (canvas.width !== displayWidth || canvas.height !== displayHeight) {
+        canvas.width = displayWidth
+        canvas.height = displayHeight
+      }
+    }
+
+    setCanvasSize()
+
+    class Particle {
+      x: number = 0
+      y: number = 0
+      size: number = 0
+      speedX: number = 0
+      speedY: number = 0
+
+      constructor() {
+        this.reset()
+      }
+
+      reset() {
+        this.x = Math.random() * canvas.width
+        this.y = Math.random() * canvas.height
+        this.size = Math.random() * 1.5 + 0.5
+        this.speedX = (Math.random() - 0.5) * 0.5
+        this.speedY = (Math.random() - 0.5) * 0.5
+      }
+
+      update() {
+        this.x += this.speedX
+        this.y += this.speedY
+
+        if (this.x < 0 || this.x > canvas.width || 
+            this.y < 0 || this.y > canvas.height) {
+          this.reset()
+        }
+      }
+
+      draw() {
+        if (!ctx) return
+        ctx.fillStyle = "rgba(255, 255, 255, 0.5)"
+        ctx.beginPath()
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2)
+        ctx.fill()
+      }
+    }
+
+    const baseParticleCount = 50
+    const particles: Particle[] = []
+    
+    const createParticles = () => {
+      const area = canvas.width * canvas.height
+      const particleCount = Math.floor(baseParticleCount * (area / (1920 * 1080)))
+      particles.length = 0
+      for (let i = 0; i < particleCount; i++) {
+        particles.push(new Particle())
+      }
+    }
+
+    createParticles()
+
+    function animate() {
+      if (!ctx) return
+      ctx.clearRect(0, 0, canvas.width, canvas.height)
+
+      for (const particle of particles) {
+        particle.update()
+        particle.draw()
+      }
+
+      requestAnimationFrame(animate)
+    }
+
+    animate()
+
+    const handleResize = () => {
+      setCanvasSize()
+      createParticles()
+    }
+
+    window.addEventListener("resize", handleResize)
+    return () => window.removeEventListener("resize", handleResize)
+  }, [])
+
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div className="relative min-h-screen w-full overflow-hidden">
+      <canvas ref={canvasRef} className="absolute inset-0 h-full w-full bg-black" />
+      
       {/* Navigation */}
-      <nav className="flex justify-between items-center p-4 md:p-8 bg-black/50 backdrop-blur-md fixed w-full top-0 border-b border-white/10 z-50">
+      <nav className="relative z-10 flex justify-between items-center p-4 md:p-8 bg-black/50 backdrop-blur-md fixed w-full top-0 border-b border-white/10">
         <Link href="/" className="flex items-center gap-2 text-gray-200 hover:text-white transition-colors">
           <FiArrowLeft className="w-5 h-5" />
           <span>Back to Home</span>
@@ -43,7 +141,7 @@ export default function AcademicConsultancy() {
       </nav>
 
       {/* Main Content */}
-      <main className="pt-32 px-4 max-w-6xl mx-auto">
+      <main className="relative z-10 pt-16 px-4 max-w-6xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -52,7 +150,7 @@ export default function AcademicConsultancy() {
         >
           <h1 className="text-4xl md:text-5xl font-bold mb-6">Academic Consultancy</h1>
           <p className="text-gray-400 max-w-2xl mx-auto">
-            Expert guidance for engineering, mathematics, and computer science projects.
+            Expert guidance for STEM, and computer science projects.
             Book a consultation to discuss your needs and get started.
           </p>
         </motion.div>
