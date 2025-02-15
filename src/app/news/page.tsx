@@ -149,9 +149,9 @@ export default function News() {
       
       {/* Navigation - keep it consistent with main page */}
       <nav className="relative z-10 flex justify-between items-center p-4 md:p-8 bg-black/50 backdrop-blur-md fixed w-full top-0 border-b border-white/10" style={{ height: '80px' }}>
-        <Link href="/" className="text-lg md:text-xl font-bold">
-          Chirag Joshi
-        </Link>
+      <Link href="/" className="text-3xl md:text-4xl font-semibold text-gray-200 tracking-tight transition duration-300 ease-in-out hover:text-gray-300">
+  Chirag Joshi
+</Link>
         <div className="flex gap-3 md:gap-6 text-sm md:text-base">
           <Link href="/news" className="bg-gray-200 text-black px-3 py-1 rounded hover:bg-gray-200 transition-colors">Press Coverage</Link>
 
