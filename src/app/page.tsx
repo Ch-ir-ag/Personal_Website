@@ -165,6 +165,7 @@ export default function Home() {
     "Mechatronic Engineer",
     "Entrepreneur",
     "Full Stack Engineer",
+    "Academic Consultant",
     // Add more titles as needed
   ]
 
@@ -206,6 +207,11 @@ export default function Home() {
       title: "AI Research",
       emoji: "🤖",
       description: "Made an AI-ML model for energy prediction, to be showcased globally in 2025"
+    },
+    {
+      title: "Academic Consultancy",
+      emoji: "📚",
+      description: "Providing expert guidance for academic and research projects in engineering, mathematics, and computer science"
     }
   ]
 
@@ -329,9 +335,9 @@ export default function Home() {
             ))}
           </div>
 
-          {/* Bottom row - 3 boxes */}
-          <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-            {highlights.slice(4, 6).map((highlight, index) => (
+          {/* Bottom row - 4 boxes */}
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+            {highlights.slice(4).map((highlight, index) => (
               <motion.div
                 key={index + 4}
                 className="bg-white/5 backdrop-blur-sm rounded-lg p-4 md:p-6 hover:bg-white/10 transition-all duration-300 
@@ -339,45 +345,50 @@ export default function Home() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: (index + 4) * 0.1 }}
-                onClick={() => setActiveBox(activeBox === (index + 4) ? null : (index + 4))}
               >
-                <div className={`transform transition-all duration-300 ease-in-out
-                  ${activeBox === (index + 4) ? 'opacity-0' : 'group-hover:opacity-0 opacity-100'}`}>
-                  <div className="text-3xl mb-2">{highlight.emoji}</div>
-                  <h3 className="text-lg md:text-xl font-semibold">{highlight.title}</h3>
-                </div>
-                <div className={`absolute inset-0 p-4 bg-white/5 backdrop-blur-sm 
-                  transition-all duration-300 ease-in-out flex items-center justify-center
-                  ${activeBox === (index + 4) ? 'opacity-100' : 'group-hover:opacity-100 opacity-0'}`}>
-                  <p className="text-gray-300 text-sm md:text-base">{highlight.description}</p>
-                </div>
+                {index === 3 && (
+                  <motion.div
+                    className="absolute inset-0 rounded-lg pointer-events-none"
+                    initial={{ opacity: 0 }}
+                    animate={{
+                      boxShadow: [
+                        '0 0 0 0 rgba(255, 255, 255, 0)',
+                        '0 0 0 2px rgba(255, 255, 255, 0.2)',
+                        '0 0 0 0 rgba(255, 255, 255, 0)'
+                      ]
+                    }}
+                    transition={{
+                      duration: 2,
+                      repeat: Infinity,
+                      repeatType: "reverse",
+                      ease: "easeInOut"
+                    }}
+                  />
+                )}
+                
+                <Link 
+                  href={index === 3 ? '/academic-consultancy' : '#'}
+                  className="w-full h-full"
+                  onClick={(e) => {
+                    if (index !== 3) {
+                      e.preventDefault();
+                      setActiveBox(activeBox === (index + 4) ? null : (index + 4));
+                    }
+                  }}
+                >
+                  <div className={`transform transition-all duration-300 ease-in-out
+                    ${activeBox === (index + 4) ? 'opacity-0' : 'group-hover:opacity-0 opacity-100'}`}>
+                    <div className="text-3xl mb-2">{highlight.emoji}</div>
+                    <h3 className="text-lg md:text-xl font-semibold">{highlight.title}</h3>
+                  </div>
+                  <div className={`absolute inset-0 p-4 bg-white/5 backdrop-blur-sm 
+                    transition-all duration-300 ease-in-out flex items-center justify-center
+                    ${activeBox === (index + 4) ? 'opacity-100' : 'group-hover:opacity-100 opacity-0'}`}>
+                    <p className="text-gray-300 text-sm md:text-base">{highlight.description}</p>
+                  </div>
+                </Link>
               </motion.div>
             ))}
-
-            {/* Last box - centered on mobile, aligned on desktop */}
-            {highlights.length > 6 && (
-              <motion.div
-                key="last-box"
-                className="col-span-2 lg:col-span-1 bg-white/5 backdrop-blur-sm rounded-lg p-6 md:p-6 
-                           hover:bg-white/10 transition-all duration-300 flex flex-col items-center text-center 
-                           h-full group relative overflow-hidden cursor-none md:cursor-none max-w-sm mx-auto lg:max-w-none lg:mx-0"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.7 }}
-                onClick={() => setActiveBox(activeBox === 6 ? null : 6)}
-              >
-                <div className={`transform transition-all duration-300 ease-in-out
-                  ${activeBox === 6 ? 'opacity-0' : 'group-hover:opacity-0 opacity-100'}`}>
-                  <div className="text-3xl mb-2">{highlights[6].emoji}</div>
-                  <h3 className="text-lg md:text-xl font-semibold">{highlights[6].title}</h3>
-                </div>
-                <div className={`absolute inset-0 p-4 bg-white/5 backdrop-blur-sm 
-                  transition-all duration-300 ease-in-out flex items-center justify-center
-                  ${activeBox === 6 ? 'opacity-100' : 'group-hover:opacity-100 opacity-0'}`}>
-                  <p className="text-gray-300 text-sm md:text-base">{highlights[6].description}</p>
-                </div>
-              </motion.div>
-            )}
           </div>
         </div>
 
