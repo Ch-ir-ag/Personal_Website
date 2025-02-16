@@ -253,17 +253,37 @@ export default function Home() {
       
       {/* Navigation */}
       <nav className="relative z-10 flex justify-between items-center p-4 md:p-8 bg-black/50 backdrop-blur-md fixed w-full top-0 border-b border-white/10" style={{ height: '80px' }}>
-      <Link href="/" className="text-3xl md:text-4xl font-semibold text-gray-200 tracking-tight transition duration-300 ease-in-out hover:text-gray-300">
-        Chirag Joshi
-      </Link>
+        <Link href="/" className="text-3xl md:text-4xl font-semibold text-gray-200 tracking-tight transition duration-300 ease-in-out hover:text-gray-300">
+          Chirag Joshi
+        </Link>
         <div className="flex gap-3 md:gap-6 text-sm md:text-base">
           <Link href="/news" className="bg-gray-200 text-black px-3 py-1 rounded hover:bg-gray-200 transition-colors">Press Coverage</Link>
-
         </div>
       </nav>
 
+      {/* Founders Journey Banner */}
+      <Link 
+        href="/founders-journey" 
+        className="relative z-10 flex justify-center items-center h-10 bg-gradient-to-r from-black/20 to-yellow-500/20 hover:from-black/30 hover:to-yellow-500/30
+ backdrop-blur-md fixed w-full top-[0px] border-y border-white/10 transition-all duration-300"
+      >
+        <div className="flex items-center gap-2 text-blue-200/90 hover:text-blue-100 transition-colors">
+          <span className="text-sm font-medium tracking-wide">
+            🚀 Follow my Founders Journey
+          </span>
+          <svg 
+            className="w-3.5 h-3.5 transform transition-transform group-hover:translate-x-1" 
+            fill="none" 
+            stroke="currentColor" 
+            viewBox="0 0 24 24"
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+          </svg>
+        </div>
+      </Link>
+
       {/* Main Content */}
-      <main className="relative z-10 flex flex-col items-center pt-32 px-4">
+      <main className="relative z-10 flex flex-col items-center pt-44 px-4">
         {/* Title Section */}
         <div className="text-center mb-20 w-full max-w-4xl mx-auto">
           <motion.h1
