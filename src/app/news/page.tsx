@@ -85,6 +85,13 @@ export default function News() {
 
   const newsArticles = [
     {
+      title: "Talent from Stripe, Google and NASA selected for second cycle of Founders",
+      publication: "Business Plus",
+      date: "January 2025",
+      description: "More than 40 participants from engineering and commercial backgrounds have been confirmed for the second cycle of Founders, a 12-week start-up programme taking place at Dogpatch Labs.",
+      link: "https://businessplus.ie/media-plus/founders-second-talent/"
+    },
+    {
         title: "Tech Talent Accelerator Founders Returns with Second Cohort",
         publication: "Business Post",
         date: "January 2025",
