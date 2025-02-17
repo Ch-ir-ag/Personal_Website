@@ -97,9 +97,9 @@ export default function Home() {
       reset() {
         this.x = Math.random() * canvas.width
         this.y = Math.random() * canvas.height
-        this.size = Math.random() * 1.5 + 0.5  // Slightly larger particles
-        this.speedX = (Math.random() - 0.5) * 0.5  // Slower speed
-        this.speedY = (Math.random() - 0.5) * 0.5
+        this.size = Math.random() * 2 + 1.5  // Increased from 1.5 + 0.5 to 2 + 0.8
+        this.speedX = (Math.random() - 0.5) * 1.2  // Increased from 0.5 to 0.8
+        this.speedY = (Math.random() - 0.5) * 1.2  // Increased from 0.5 to 0.8
       }
 
       update() {
