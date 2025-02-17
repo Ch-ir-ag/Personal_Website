@@ -8,7 +8,6 @@ import { useEffect, useRef } from "react"
 const services = [
   {
     title: "Academic Consultation",
-    price: "€45/hour",
     description: "One-on-one consultation for academics.",
     features: [
       "STEM student guidance (Mechatronics, AI, Software Engineering)",
@@ -20,7 +19,6 @@ const services = [
   },
   {
     title: "Professional Consultation",
-    price: "€75/hour",
     description: "One-on-one consultation for early & mid stage careers.",
     features: [
       "Resume & cover letter optimization (STEM careers)",
@@ -166,7 +164,6 @@ export default function AcademicConsultancy() {
               className="bg-white/5 backdrop-blur-sm rounded-lg p-6 md:p-8 hover:bg-white/10 transition-all duration-300"
             >
               <h2 className="text-2xl font-bold mb-4">{service.title}</h2>
-              <p className="text-xl text-blue-400 mb-4">{service.price}</p>
               <p className="text-gray-400 mb-6">{service.description}</p>
               <ul className="space-y-3">
                 {service.features.map((feature, i) => (
@@ -176,13 +173,11 @@ export default function AcademicConsultancy() {
                   </li>
                 ))}
               </ul>
-              <Link 
-                href="https://calendly.com/your-calendly-link" 
-                target="_blank"
-                className="block mt-8 bg-blue-500 text-white px-6 py-3 rounded-lg text-center hover:bg-blue-600 transition-colors"
+              <button 
+                className="block w-full mt-8 bg-blue-500 text-white px-6 py-3 rounded-lg text-center hover:bg-blue-600 transition-colors"
               >
-                Book Consultation
-              </Link>
+                Contact for Pricing
+              </button>
             </motion.div>
           ))}
         </div>
@@ -195,10 +190,7 @@ export default function AcademicConsultancy() {
           className="text-center mb-20"
         >
           <p className="text-gray-400">
-            Have questions? Email me at{' '}
-            <Link href="mailto:csjoshi2003@gmail.com" className="text-blue-400 hover:text-blue-300">
-              csjoshi2003@gmail.com
-            </Link>
+            csjoshi2003 [at] gmail [dot] com
           </p>
         </motion.div>
       </main>
