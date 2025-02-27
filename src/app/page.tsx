@@ -261,15 +261,15 @@ export default function Home() {
         </div>
       </nav>
 
-      {/* Founders Journey Banner */}
+      {/* FoodTracker Waitlist Banner */}
       <Link 
-        href="/founders-journey" 
-        className="relative z-10 flex justify-center items-center h-10 bg-gradient-to-r from-black/20 to-yellow-500/20 hover:from-black/30 hover:to-yellow-500/30
- backdrop-blur-md fixed w-full top-[0px] border-y border-white/10 transition-all duration-300"
+        href="https://food-expiry-tracker-sigma.vercel.app/" 
+        className="relative z-10 flex justify-center items-center h-10 bg-gradient-to-r from-black/20 to-blue-700/20 hover:from-black/30 hover:to-blue-700/30
+backdrop-blur-md fixed w-full top-[0px] border-y border-white/10 transition-all duration-300"
       >
         <div className="flex items-center gap-2 text-blue-200/90 hover:text-blue-100 transition-colors">
           <span className="text-sm font-medium tracking-wide">
-            🚀 Follow my Founders Journey
+            🚀 Join the wait list at FoodTracker
           </span>
           <svg 
             className="w-3.5 h-3.5 transform transition-transform group-hover:translate-x-1" 
