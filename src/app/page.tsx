@@ -262,25 +262,7 @@ export default function Home() {
       </nav>
 
       {/* FoodTracker Waitlist Banner */}
-      <Link 
-        href="https://expiroo.com/" 
-        className="relative z-10 flex justify-center items-center h-10 bg-gradient-to-r from-black/20 to-blue-700/20 hover:from-black/30 hover:to-blue-700/30
-backdrop-blur-md fixed w-full top-[0px] border-y border-white/10 transition-all duration-300"
-      >
-        <div className="flex items-center gap-2 text-blue-200/90 hover:text-blue-100 transition-colors">
-          <span className="text-sm font-medium tracking-wide">
-            🚀 Join the wait list at Expiroo
-          </span>
-          <svg 
-            className="w-3.5 h-3.5 transform transition-transform group-hover:translate-x-1" 
-            fill="none" 
-            stroke="currentColor" 
-            viewBox="0 0 24 24"
-          >
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-          </svg>
-        </div>
-      </Link>
+
 
       {/* Main Content */}
       <main className="relative z-10 flex flex-col items-center pt-44 px-4">
