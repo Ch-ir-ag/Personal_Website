@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react"
 import { motion } from "framer-motion"
 import Link from "next/link"
-import { FiLinkedin, FiMail } from 'react-icons/fi'
+import { FiLinkedin, FiMail, FiGithub } from 'react-icons/fi'
 
 // Add this custom hook at the top of the file
 const useTypingEffect = (words: string[]) => {
@@ -165,7 +165,7 @@ export default function Home() {
     "Mechatronic Engineer",
     "Entrepreneur",
     "Full Stack Engineer",
-    "Academic Consultant",
+    "AI Engineer",
     // Add more titles as needed
   ]
 
@@ -260,12 +260,58 @@ export default function Home() {
           <Link href="/news" className="bg-gray-200 text-black px-3 py-1 rounded hover:bg-gray-200 transition-colors">Press Coverage</Link>
         </div>
       </nav>
+      
 
-      {/* FoodTracker Waitlist Banner */}
+      {/* Banner */}
+      <motion.section 
+        className="relative z-10 sticky top-[80px] w-full bg-gradient-to-r from-white/10 to-stone-200/10 h-16 md:h-20 backdrop-blur-sm flex items-center justify-between border-b border-white/10"
+        initial={{ opacity: 0, y: -16 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.7, ease: "easeOut" }}
+        aria-label="Visit Daisy AI – The decision making engine for Dairy Processors"
+      >
+        <Link 
+          href="https://www.joindaisy.co" 
+          target="_blank" 
+          rel="noopener"
+          className="w-full h-full flex items-center justify-center px-4 md:px-8 group"
+        >
+          <div className="flex items-center justify-center flex-grow">
+            <motion.span 
+              className="text-2xl mr-3"
+              animate={{ 
+                scale: [1, 1.15, 1],
+                opacity: [1, 0.9, 1]
+              }}
+              transition={{ 
+                duration: 5, 
+                repeat: Infinity,
+                repeatType: "loop"
+              }}
+            >
+              🌼
+            </motion.span>
+            <p className="text-sm md:text-base text-gray-300">
+              Discover <span className="font-semibold">Daisy AI</span> – The decision making engine for Dairy Processors
+            </p>
+          </div>
+          <motion.div
+            className="text-gray-300 flex items-center"
+            whileHover={{ x: 4 }}
+          >
+            <span className="hidden md:inline mr-2">Learn more</span>
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+              <path fillRule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
+            </svg>
+          </motion.div>
+        </Link>
+      </motion.section>
+
+
 
 
       {/* Main Content */}
-      <main className="relative z-10 flex flex-col items-center pt-44 px-4">
+      <main className="relative z-10 flex flex-col items-center pt-24 md:pt-28 px-4">
         {/* Title Section */}
         <div className="text-center mb-20 w-full max-w-4xl mx-auto">
           <motion.h1
@@ -303,8 +349,8 @@ export default function Home() {
             <Link href="https://www.linkedin.com/in/chiragJ2" className="hover:text-gray-300">
               <FiLinkedin className="w-6 h-6" />
             </Link>
-            <Link href="mailto:csjoshi2003@gmail.com" className="hover:text-gray-300">
-              <FiMail className="w-6 h-6" />
+            <Link href="https://github.com/Ch-ir-ag" className="hover:text-gray-300">
+              <FiGithub className="w-6 h-6" />
             </Link>
           </motion.div>
         </div>
