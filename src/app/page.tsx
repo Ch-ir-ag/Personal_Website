@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react"
 import { motion } from "framer-motion"
 import Link from "next/link"
-import { FiLinkedin, FiMail, FiGithub } from 'react-icons/fi'
+import { FiLinkedin, FiGithub } from 'react-icons/fi'
 
 // Add this custom hook at the top of the file
 const useTypingEffect = (words: string[]) => {
@@ -97,9 +97,9 @@ export default function Home() {
       reset() {
         this.x = Math.random() * canvas.width
         this.y = Math.random() * canvas.height
-        this.size = Math.random() * 2 + 1.5  // Increased from 1.5 + 0.5 to 2 + 0.8
-        this.speedX = (Math.random() - 0.5) * 1.2  // Increased from 0.5 to 0.8
-        this.speedY = (Math.random() - 0.5) * 1.2  // Increased from 0.5 to 0.8
+        this.size = Math.random() * 2 + 1.5  
+        this.speedX = (Math.random() - 0.5) * 1.2  
+        this.speedY = (Math.random() - 0.5) * 1.2  
       }
 
       update() {
