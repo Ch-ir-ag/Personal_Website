@@ -218,8 +218,15 @@ export default function Home() {
   // Add this near your other data constants
   const workExperience = [
     {
-      role: "Founder - CTO",
-      company: "Resident at Founders - DogPatch Labs",
+      role: "Co-Foudner & CTO",
+      company: "Daisy AI",
+      period: "February 2025 - Present",
+      description: "Building a decision making engine for Dairy Processors",
+      technologies: ["Predictive Analytics"]
+    },
+    {
+      role: "Resident at Founders",
+      company: "DogPatch Labs",
       period: "December 2024 - Present",
       description: "Building a stealth startup in Ireland's most competitive startup accelerator (1% acceptance rate) with a mission to disrupt the AI industry",
       technologies: ["That's a secret"]
