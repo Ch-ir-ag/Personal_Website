@@ -5,7 +5,7 @@ import { motion } from "framer-motion"
 import Link from "next/link"
 import { FiLinkedin, FiGithub } from 'react-icons/fi'
 
-// Add this custom hook at the top of the file
+// Custom hook for typing effect (remains unchanged)
 const useTypingEffect = (words: string[]) => {
   const [currentText, setCurrentText] = useState('')
   const [wordIndex, setWordIndex] = useState(0)
@@ -18,10 +18,8 @@ const useTypingEffect = (words: string[]) => {
     switch (phase) {
       case 'typing': {
         if (currentText === currentWord) {
-          // Word is fully typed, wait 2 seconds before deleting
           timeout = setTimeout(() => setPhase('deleting'), 2000)
         } else {
-          // Type next letter - reduced from 200ms to 150ms
           timeout = setTimeout(() => {
             setCurrentText(currentWord.slice(0, currentText.length + 1))
           }, 100)
@@ -31,13 +29,11 @@ const useTypingEffect = (words: string[]) => {
       
       case 'deleting': {
         if (currentText === '') {
-          // Word is fully deleted, wait before typing next word
           timeout = setTimeout(() => {
             setWordIndex((wordIndex + 1) % words.length)
             setPhase('waiting')
           }, 25)
         } else {
-          // Delete last letter
           timeout = setTimeout(() => {
             setCurrentText(currentText.slice(0, -1))
           }, 75)
@@ -46,7 +42,6 @@ const useTypingEffect = (words: string[]) => {
       }
 
       case 'waiting': {
-        // Reduced waiting time from 500ms to 300ms
         timeout = setTimeout(() => setPhase('typing'), 300)
         break
       }
@@ -61,7 +56,10 @@ const useTypingEffect = (words: string[]) => {
 export default function Home() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const [activeBox, setActiveBox] = useState<number | null>(null)
+  const mousePositionRef = useRef<{ x: number | undefined; y: number | undefined }>({ x: undefined, y: undefined });
 
+
+  // UPDATED useEffect for the new canvas background
   useEffect(() => {
     if (!canvasRef.current) return
 
@@ -70,11 +68,8 @@ export default function Home() {
     if (!ctx) return
 
     const setCanvasSize = () => {
-      // Get the actual display size of the canvas
       const displayWidth = canvas.clientWidth
       const displayHeight = canvas.clientHeight
-
-      // Check if the canvas size needs to be updated
       if (canvas.width !== displayWidth || canvas.height !== displayHeight) {
         canvas.width = displayWidth
         canvas.height = displayHeight
@@ -83,94 +78,171 @@ export default function Home() {
 
     setCanvasSize()
 
+    const handleMouseMove = (event: MouseEvent) => {
+      mousePositionRef.current = { x: event.clientX, y: event.clientY };
+    };
+    window.addEventListener("mousemove", handleMouseMove);
+
     class Particle {
-      x: number = 0
-      y: number = 0
-      size: number = 0
-      speedX: number = 0
-      speedY: number = 0
+      x: number;
+      y: number;
+      size: number;
+      speedX: number;
+      speedY: number;
+      originalSpeedX: number; // To store base speed
+      originalSpeedY: number; // To store base speed
 
       constructor() {
-        this.reset()
+        this.x = 0;
+        this.y = 0;
+        this.size = 0;
+        this.speedX = 0;
+        this.speedY = 0;
+        this.originalSpeedX = 0;
+        this.originalSpeedY = 0;
+        this.reset();
       }
 
       reset() {
-        this.x = Math.random() * canvas.width
-        this.y = Math.random() * canvas.height
-        this.size = Math.random() * 2 + 1.5  
-        this.speedX = (Math.random() - 0.5) * 1.2  
-        this.speedY = (Math.random() - 0.5) * 1.2  
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.size = Math.random() * 1.5 + 0.8; // Smaller, more delicate particles: 0.8px to 2.3px
+        
+        // Slower base speed
+        this.originalSpeedX = (Math.random() - 0.5) * 0.3; 
+        this.originalSpeedY = (Math.random() - 0.5) * 0.3;
+        this.speedX = this.originalSpeedX;
+        this.speedY = this.originalSpeedY;
       }
 
       update() {
-        this.x += this.speedX
-        this.y += this.speedY
+        // Mouse interaction
+        const mouse = mousePositionRef.current;
+        if (mouse.x !== undefined && mouse.y !== undefined) {
+          const dx_mouse = this.x - mouse.x;
+          const dy_mouse = this.y - mouse.y;
+          const distance_mouse = Math.sqrt(dx_mouse * dx_mouse + dy_mouse * dy_mouse);
+          const interaction_radius = 100; // Radius of mouse influence
+          
+          if (distance_mouse < interaction_radius) {
+            const force = (interaction_radius - distance_mouse) / interaction_radius;
+            // Add a gentle push away from the mouse
+            this.speedX += (dx_mouse / distance_mouse) * force * 0.15; // Adjust strength (0.15 here)
+            this.speedY += (dy_mouse / distance_mouse) * force * 0.15;
+          }
+        }
+
+        // Apply friction/drag to eventually return to original speed or slow down
+        this.speedX += (this.originalSpeedX - this.speedX) * 0.01; // Gently pull back to original speed
+        this.speedY += (this.originalSpeedY - this.speedY) * 0.01;
+
+
+        // Max speed limit to prevent particles from flying off too fast
+        const maxSpeed = 1.0; 
+        const currentSpeed = Math.sqrt(this.speedX * this.speedX + this.speedY * this.speedY);
+        if (currentSpeed > maxSpeed) {
+          this.speedX = (this.speedX / currentSpeed) * maxSpeed;
+          this.speedY = (this.speedY / currentSpeed) * maxSpeed;
+        }
+        
+        this.x += this.speedX;
+        this.y += this.speedY;
 
         // Reset particle if it goes off screen
-        if (this.x < 0 || this.x > canvas.width || 
-            this.y < 0 || this.y > canvas.height) {
-          this.reset()
+        if (this.x < -this.size || this.x > canvas.width + this.size || 
+            this.y < -this.size || this.y > canvas.height + this.size) {
+          this.reset();
+          // Place particle on opposite side for smoother continuous flow
+          if (this.x < -this.size) this.x = canvas.width + this.size;
+          else if (this.x > canvas.width + this.size) this.x = -this.size;
+          if (this.y < -this.size) this.y = canvas.height + this.size;
+          else if (this.y > canvas.height + this.size) this.y = -this.size;
         }
       }
 
       draw() {
-        if (!ctx) return
-        ctx.fillStyle = "rgba(255, 255, 255, 0.5)"
-        ctx.beginPath()
-        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2)
-        ctx.fill()
+        if (!ctx) return;
+        ctx.fillStyle = "rgba(200, 200, 255, 0.6)"; // Bluish-white, slightly transparent
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fill();
       }
     }
 
-    // Calculate particle count based on screen area
-    const baseParticleCount = 50
-    const particles: Particle[] = []
+    const baseParticleCount = 60; // Slightly increased for better constellation density
+    const particles: Particle[] = [];
     
     const createParticles = () => {
-      const area = canvas.width * canvas.height
-      const particleCount = Math.floor(baseParticleCount * (area / (1920 * 1080)))
-      particles.length = 0
-      for (let i = 0; i < particleCount; i++) {
-        particles.push(new Particle())
-      }
-    }
+      const area = canvas.width * canvas.height;
+      // Adjusted scaling for denser small screens, capped for very large screens
+      const targetDensity = baseParticleCount / (1920 * 1080);
+      let particleCount = Math.floor(targetDensity * area);
+      particleCount = Math.max(30, Math.min(150, particleCount)); // Min 30, Max 150 particles
 
-    createParticles()
+      particles.length = 0; // Clear existing particles
+      for (let i = 0; i < particleCount; i++) {
+        particles.push(new Particle());
+      }
+    };
+
+    createParticles();
+
+    const connectDistance = 110; // Max distance to draw a line between particles
 
     function animate() {
-      if (!ctx) return
-      ctx.clearRect(0, 0, canvas.width, canvas.height)
+      if (!ctx) return;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+      // Update and draw particles
       for (const particle of particles) {
-        particle.update()
-        particle.draw()
+        particle.update();
+        particle.draw();
       }
 
-      requestAnimationFrame(animate)
+      // Connect particles with lines
+      ctx.lineWidth = 0.35; // Thin lines for a delicate look
+      for (let i = 0; i < particles.length; i++) {
+        for (let j = i + 1; j < particles.length; j++) {
+          const dx = particles[i].x - particles[j].x;
+          const dy = particles[i].y - particles[j].y;
+          const distance = Math.sqrt(dx * dx + dy * dy);
+
+          if (distance < connectDistance) {
+            const opacity = Math.max(0, (1 - distance / connectDistance) * 0.35); // Max opacity 0.35 for lines
+            ctx.strokeStyle = `rgba(200, 200, 255, ${opacity})`;
+            ctx.beginPath();
+            ctx.moveTo(particles[i].x, particles[i].y);
+            ctx.lineTo(particles[j].x, particles[j].y);
+            ctx.stroke();
+          }
+        }
+      }
+
+      requestAnimationFrame(animate);
     }
 
-    animate()
+    animate();
 
     const handleResize = () => {
-      setCanvasSize()
-      createParticles()
-    }
+      setCanvasSize();
+      createParticles(); // Re-create particles for new size
+    };
 
-    window.addEventListener("resize", handleResize)
-    return () => window.removeEventListener("resize", handleResize)
-  }, [])
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+      window.removeEventListener("mousemove", handleMouseMove);
+      // Consider canceling animation frame if component unmounts, though requestAnimationFrame stops if tab is inactive
+    };
+  }, []); // Empty dependency array: effect runs once on mount and cleans up on unmount
 
-  // Add this array of titles you want to cycle through
   const titles = [
     "Mechatronic Engineer",
     "Entrepreneur",
     "Full Stack Engineer",
     "AI Engineer",
-    // Add more titles as needed
-  ]
-
-  // Use the custom hook
-  const displayText = useTypingEffect(titles)
+  ];
+  const displayText = useTypingEffect(titles);
 
   const highlights = [
     {
@@ -213,12 +285,11 @@ export default function Home() {
       emoji: "📚",
       description: "Providing expert guidance for academic and research projects in engineering, mathematics, and computer science"
     }
-  ]
+  ];
 
-  // Add this near your other data constants
   const workExperience = [
     {
-      role: "Co-Foudner & CTO",
+      role: "Co-Founder & CTO",
       company: "Daisy AI",
       period: "February 2025 - Present",
       description: "Building a decision making engine for Dairy Processors",
@@ -252,14 +323,14 @@ export default function Home() {
       description: "Automated high and medium voltage substation condition monitoring system, leveraging SQL for data organization in the database. ",
       technologies: ["Python", "C++", "SQL"]
     }
-  ]
+  ];
 
   return (
     <div className="relative min-h-screen w-full overflow-hidden">
-      <canvas ref={canvasRef} className="absolute inset-0 h-full w-full bg-black" />
+      {/* Canvas is now behind everything else, ensure content has z-index if needed */}
+      <canvas ref={canvasRef} className="absolute inset-0 h-full w-full bg-black -z-10" />
       
-      {/* Navigation */}
-      <nav className="relative z-10 flex justify-between items-center p-4 md:p-8 bg-black/50 backdrop-blur-md fixed w-full top-0 border-b border-white/10" style={{ height: '80px' }}>
+      <nav className="relative z-20 flex justify-between items-center p-4 md:p-8 bg-black/50 backdrop-blur-md fixed w-full top-0 border-b border-white/10" style={{ height: '80px' }}>
         <Link href="/" className="text-3xl md:text-4xl font-semibold text-gray-200 tracking-tight transition duration-300 ease-in-out hover:text-gray-300">
           Chirag Joshi
         </Link>
@@ -268,10 +339,8 @@ export default function Home() {
         </div>
       </nav>
       
-
-      {/* Banner */}
       <motion.section 
-        className="relative z-10 sticky top-[80px] w-full bg-gradient-to-r from-white/10 to-stone-200/10 h-16 md:h-20 backdrop-blur-sm flex items-center justify-between border-b border-white/10"
+        className="relative z-20 sticky top-[80px] w-full bg-gradient-to-r from-white/10 to-stone-200/10 h-16 md:h-20 backdrop-blur-sm flex items-center justify-between border-b border-white/10"
         initial={{ opacity: 0, y: -16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.7, ease: "easeOut" }}
@@ -314,19 +383,14 @@ export default function Home() {
         </Link>
       </motion.section>
 
-
-
-
-      {/* Main Content */}
       <main className="relative z-10 flex flex-col items-center pt-24 md:pt-28 px-4">
-        {/* Title Section */}
         <div className="text-center mb-20 w-full max-w-4xl mx-auto">
           <motion.h1
-            className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold mb-6 min-h-[1.2em] px-4"
+            className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold mb-6 min-h-[1.2em] px-4 text-gray-100" // Ensured text color for visibility
             style={{
               fontSize: 'clamp(1.5rem, 5vw, 4.5rem)',
               lineHeight: 1.2,
-              whiteSpace: 'nowrap'  // Prevent text wrapping
+              whiteSpace: 'nowrap'
             }}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -345,7 +409,6 @@ export default function Home() {
             {"Hey, I'm Chirag Joshi."}
           </motion.p>
 
-          {/* Social Links */}
           <motion.div
             className="flex justify-center gap-6"
             initial={{ opacity: 0, y: 20 }}
@@ -353,55 +416,52 @@ export default function Home() {
             transition={{ duration: 0.8, delay: 0.4 }}
             key="social-links"
           >
-            <Link href="https://www.linkedin.com/in/chiragJ2" className="hover:text-gray-300">
+            <Link href="https://www.linkedin.com/in/chiragJ2" className="text-gray-300 hover:text-gray-100">
               <FiLinkedin className="w-6 h-6" />
             </Link>
-            <Link href="https://github.com/Ch-ir-ag" className="hover:text-gray-300">
+            <Link href="https://github.com/Ch-ir-ag" className="text-gray-300 hover:text-gray-100">
               <FiGithub className="w-6 h-6" />
             </Link>
           </motion.div>
         </div>
 
-        {/* Highlights Grid */}
         <div className="flex flex-col gap-4 md:gap-6 max-w-7xl mx-auto w-full px-4 -mt-8">
-          {/* Top row - 4 boxes */}
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
             {highlights.slice(0, 4).map((highlight, index) => (
               <motion.div
                 key={index}
                 className="bg-white/5 backdrop-blur-sm rounded-lg p-4 md:p-6 hover:bg-white/10 transition-all duration-300 
-                           flex flex-col items-center text-center h-full group relative overflow-hidden cursor-none md:cursor-none"
+                           flex flex-col items-center text-center h-full group relative overflow-hidden cursor-pointer" // Changed cursor
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: index * 0.1 }}
                 onClick={() => setActiveBox(activeBox === index ? null : index)}
               >
-                <div className={`transform transition-all duration-300 ease-in-out
-                  ${activeBox === index ? 'opacity-0' : 'group-hover:opacity-0 opacity-100'}`}>
+                <div className={`transform transition-all duration-300 ease-in-out text-gray-100
+                  ${activeBox === index ? 'opacity-0 scale-90' : 'group-hover:opacity-0 group-hover:scale-90 opacity-100 scale-100'}`}>
                   <div className="text-3xl mb-2">{highlight.emoji}</div>
                   <h3 className="text-lg md:text-xl font-semibold">{highlight.title}</h3>
                 </div>
                 <div className={`absolute inset-0 p-4 bg-white/5 backdrop-blur-sm 
                   transition-all duration-300 ease-in-out flex items-center justify-center
-                  ${activeBox === index ? 'opacity-100' : 'group-hover:opacity-100 opacity-0'}`}>
+                  ${activeBox === index ? 'opacity-100 scale-100' : 'group-hover:opacity-100 group-hover:scale-100 opacity-0 scale-90'}`}>
                   <p className="text-gray-300 text-sm md:text-base">{highlight.description}</p>
                 </div>
               </motion.div>
             ))}
           </div>
 
-          {/* Bottom row - 4 boxes */}
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
             {highlights.slice(4).map((highlight, index) => (
               <motion.div
                 key={index + 4}
                 className="bg-white/5 backdrop-blur-sm rounded-lg p-4 md:p-6 hover:bg-white/10 transition-all duration-300 
-                           flex flex-col items-center text-center h-full group relative overflow-hidden cursor-none md:cursor-none"
+                           flex flex-col items-center text-center h-full group relative overflow-hidden" // Base styles
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: (index + 4) * 0.1 }}
               >
-                {index === 3 && (
+                {index === 3 && ( // Special handling for the linkable box
                   <motion.div
                     className="absolute inset-0 rounded-lg pointer-events-none"
                     initial={{ opacity: 0 }}
@@ -423,22 +483,23 @@ export default function Home() {
                 
                 <Link 
                   href={index === 3 ? '/academic-consultancy' : '#'}
-                  className="w-full h-full"
+                  className="w-full h-full flex flex-col items-center justify-center text-center cursor-pointer" // Make link take full space
                   onClick={(e) => {
-                    if (index !== 3) {
+                    if (index !== 3) { // If not the linkable box, prevent default and toggle active state
                       e.preventDefault();
                       setActiveBox(activeBox === (index + 4) ? null : (index + 4));
                     }
+                    // If it IS the linkable box (index === 3), Link's default behavior will navigate
                   }}
                 >
-                  <div className={`transform transition-all duration-300 ease-in-out
-                    ${activeBox === (index + 4) ? 'opacity-0' : 'group-hover:opacity-0 opacity-100'}`}>
+                  <div className={`transform transition-all duration-300 ease-in-out text-gray-100
+                    ${activeBox === (index + 4) ? 'opacity-0 scale-90' : 'group-hover:opacity-0 group-hover:scale-90 opacity-100 scale-100'}`}>
                     <div className="text-3xl mb-2">{highlight.emoji}</div>
                     <h3 className="text-lg md:text-xl font-semibold">{highlight.title}</h3>
                   </div>
                   <div className={`absolute inset-0 p-4 bg-white/5 backdrop-blur-sm 
                     transition-all duration-300 ease-in-out flex items-center justify-center
-                    ${activeBox === (index + 4) ? 'opacity-100' : 'group-hover:opacity-100 opacity-0'}`}>
+                    ${activeBox === (index + 4) ? 'opacity-100 scale-100' : 'group-hover:opacity-100 group-hover:scale-100 opacity-0 scale-90'}`}>
                     <p className="text-gray-300 text-sm md:text-base">{highlight.description}</p>
                   </div>
                 </Link>
@@ -447,9 +508,8 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Work Experience Section */}
-        <section className="relative z-10 py-20 px-4">
-          <h2 className="text-3xl font-bold text-center mb-16">Where I have been</h2>
+        <section className="relative z-10 py-20 px-4 w-full">
+          <h2 className="text-3xl font-bold text-center mb-16 text-gray-100">Where I have been</h2>
           <div className="max-w-4xl mx-auto">
             {workExperience.map((work, index) => (
               <motion.div
@@ -459,13 +519,12 @@ export default function Home() {
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.8, delay: index * 0.2 }}
               >
-                {/* Timeline dot */}
-                <div className="absolute left-0 top-2 w-2 h-2 bg-blue-400 rounded-full transform -translate-x-1/2" />
+                <div className="absolute left-0 top-2 w-2 h-2 bg-blue-400 rounded-full transform -translate-x-[calc(50%-1px)]" /> 
                 
                 <div className="bg-white/5 backdrop-blur-sm rounded-lg p-6 hover:bg-white/10 transition-all duration-300">
                   <div className="flex flex-col md:flex-row md:items-center justify-between mb-4">
                     <h3 className="text-xl font-bold text-white">{work.role}</h3>
-                    <span className="text-blue-400 text-sm">{work.period}</span>
+                    <span className="text-blue-400 text-sm mt-1 md:mt-0">{work.period}</span>
                   </div>
                   
                   <h4 className="text-lg text-gray-300 mb-4">{work.company}</h4>
